@@ -1,0 +1,21 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}Register{% endblock %}
+
+{% block body %}
+    <div class="form-container">
+    <p class="title">Create account</p>
+    <p class="sub-title">Let's get statred with your 30 days free trial</p>
+
+            {{ form_start(registrationForm) }}
+            {{ form_row(registrationForm.email) }}
+            {{ form_row(registrationForm.plainPassword) }}
+
+            {{ form_row(registrationForm.agreeTerms) }}
+
+        <button type="submit" class="form-btn">Create account</button>
+        <p class="sign-up-label">
+            Already have an account?<span class="sign-up-link"><a href="{{ path('app_login') }}">Log in</a></span>
+        {{ form_end(registrationForm) }}
+    </div>
+{% endblock %}
