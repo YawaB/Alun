@@ -3,17 +3,18 @@
 {% block title %}Log in!{% endblock %}
 
 {% block body %}
+    {% if error %}
+        <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+    {% endif %}
+
+    {% if app.user %}
+        <div class="alert alert-success">
+            You are logged in as {{ app.user.userIdentifier }}, <a href="{{ path('app_logout') }}">Logout</a>
+        </div>
+    {% endif %}
     <div class="form-container">
         <p class="title">Welcome back</p>
         <form class="form" method="post">
-            {% if error %}
-                <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
-            {% endif %}
-            {% if app.user %}
-                <div class="mb-3">
-                    You are logged in as {{ app.user.userIdentifier }}, <a href="{{ path('app_logout') }}">Logout</a>
-                </div>
-            {% endif %}
             <input type="email" name="email" id="inputEmail" value="{{ last_username }}" class="input" placeholder="Email" autocomplete="email" required autofocus>
             <input type="password" name="password" id="inputPassword" class="input" placeholder="Password" autocomplete="current-password" required>
             <p class="page-link">
