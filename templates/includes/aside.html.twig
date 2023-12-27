@@ -3,9 +3,21 @@
     <ul class="sidebar-nav" id="sidebar-nav">
 
         <li class="nav-item">
-            <a class="nav-link " href="#">
+            <a class="nav-link " href="{{ path('app_dashboard') }}">
                 <i class="bi bi-grid"></i>
                 <span>Dashboard</span>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link " href="{{ path('app_task_index') }}">
+                <i class="bi bi-list-task"></i>
+                <span>Tasks</span>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link " href="{{ path('app_project_index') }}">
+                <i class="bi bi-list-task"></i>
+                <span>Projects</span>
             </a>
         </li><!-- End Dashboard Nav -->
     </ul>

@@ -78,4 +78,12 @@ class TaskController extends AbstractController
 
         return $this->redirectToRoute('app_task_index', [], Response::HTTP_SEE_OTHER);
     }
+    #[Route('/{id}/change-status', name: 'app_task_change_status', methods: ['POST'])]
+    public function changeStatus(Task $task, EntityManagerInterface $entityManager): Response
+    {
+        $task->setStatus(!$task->getStatus());
+        $entityManager->flush();
+
+        return $this->redirectToRoute('app_task_index', [], Response::HTTP_SEE_OTHER);
+    }
 }

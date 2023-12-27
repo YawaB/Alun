@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Project;
+use App\Entity\User;
 use App\Form\ProjectType;
 use App\Repository\ProjectRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -10,6 +11,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Security;
 
 #[Route('/project')]
 class ProjectController extends AbstractController
@@ -23,11 +25,15 @@ class ProjectController extends AbstractController
     }
 
     #[Route('/new', name: 'app_project_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $entityManager): Response
+    public function new(Request $request, EntityManagerInterface $entityManager,  Security $security): Response
     {
         $project = new Project();
         $form = $this->createForm(ProjectType::class, $project);
         $form->handleRequest($request);
+        $user = $security->getUser();
+
+        // Définir l'utilisateur connecté comme créateur de la tâche
+        $project->setCreatedBy($user);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->persist($project);
@@ -45,8 +51,10 @@ class ProjectController extends AbstractController
     #[Route('/{id}', name: 'app_project_show', methods: ['GET'])]
     public function show(Project $project): Response
     {
+        $creator=$project->getCreatedBy();
         return $this->render('project/show.html.twig', [
             'project' => $project,
+            'creator' => $creator,
         ]);
     }
 

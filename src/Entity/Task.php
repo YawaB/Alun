@@ -16,9 +16,8 @@ class Task
     #[ORM\Column(length: 255)]
     private ?string $name = null;
 
-    #[ORM\Column(length: 255)]
-    private ?string $status = null;
-
+    #[ORM\Column(type: 'boolean', options: ['default' => false], nullable:  false)]
+    private ?bool $status = null;
     #[ORM\ManyToOne(inversedBy: 'tasks')]
     #[ORM\JoinColumn(nullable: false)]
     private ?User $assignedUser = null;
@@ -44,17 +43,17 @@ class Task
         return $this;
     }
 
-    public function getStatus(): ?string
+    public function getStatus(): ?bool
     {
         return $this->status;
     }
 
-    public function setStatus(string $status): static
+    public function setStatus(?bool $status): void
     {
         $this->status = $status;
-
-        return $this;
     }
+
+
 
     public function getAssignedUser(): ?User
     {

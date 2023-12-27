@@ -1,17 +1,19 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}Task index{% endblock %}
-
+{% block pagetitle %}Tasks{% endblock %}
+{% block subtitle %}Tasks{% endblock %}
 {% block body %}
-    <h1>Task index</h1>
-
     <table class="table">
         <thead>
             <tr>
-                <th>Id</th>
+                <th>#</th>
                 <th>Name</th>
+                <th>En charge</th>
+                <th>Projet</th>
                 <th>Status</th>
                 <th>actions</th>
+                <th>Ended</th>
             </tr>
         </thead>
         <tbody>
@@ -19,10 +21,29 @@
             <tr>
                 <td>{{ task.id }}</td>
                 <td>{{ task.name }}</td>
-                <td>{{ task.status }}</td>
+                <td>{{ task.assignedUser.email }}</td>
+                <td>{{ task.project.name }}</td>
                 <td>
-                    <a href="{{ path('app_task_show', {'id': task.id}) }}">show</a>
-                    <a href="{{ path('app_task_edit', {'id': task.id}) }}">edit</a>
+                    {% if task.status == 0 %}
+                        <span class="badge badge-danger">To do</span>
+                    {% elseif task.status == 1 %}
+                        <span class="badge badge-success">Done</span>
+                    {% endif %}
+                <td>
+                    <div class="btn-action" role="group" aria-label="Basic example">
+                        <a href="{{ path('app_task_edit', {'id': task.id}) }}"><i class="fa-solid fa-edit"></i></a>
+                        <a href="{{ path('app_task_delete', {'id': task.id}) }}"><i class="fa-solid fa-trash"></i></a>
+                    </div>
+                </td>
+                <td>
+                    <form id="change-status-form-{{ task.id }}" action="{{ path('app_task_change_status', {'id': task.id}) }}" method="post">
+                        <button type="submit" class="change-status-button" style="display: none;"></button>
+                    </form>
+                    <a href="#" class="change-status-icon" onclick="event.preventDefault(); document.getElementById('change-status-form-{{ task.id }}').submit();">
+                        {{ task.status ? '<i class="fa-solid fa-toggle-on"></i>' : '<i class="fa-solid fa-toggle-off"></i>' }}
+
+                    </a>
+{#                    <a href="{{ path('app_task_change_status', {'id': task.id}) }}" class="change-status-icon"><i class="fa-solid fa-toggle-off"></i></a>#}
                 </td>
             </tr>
         {% else %}
