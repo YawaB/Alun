@@ -1,30 +1,80 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}Project{% endblock %}
+{% block pagetitle %}Projects{% endblock %}
+{% block subtitle %}{{ project.name }}{% endblock %}
 
 {% block body %}
-    <h1>Project</h1>
 
-    <table class="table">
-        <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ project.id }}</td>
-            </tr>
-            <tr>
-                <th>Name</th>
-                <td>{{ project.name }}</td>
-            </tr>
-            <tr>
-                <th>Created by</th>
-                <td>{{ project.createdBy.email}}</td>
-            </tr>
-        </tbody>
-    </table>
+    <div class="row ">
+        <div class="col-xxl-4 col-md-6">
+            <div class="card info-card sales-card">
+
+                <div class="card-body">
+                    <h5 class="card-title">Tasks</h5>
+
+                    <div class="d-flex align-items-center">
+                        <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                            <i class="bi bi-tablet"></i>
+                        </div>
+                        <div class="ps-3">
+                            <h6>{{ nbTasks }}</h6>
+                            <span class="text-success small pt-1 fw-bold">{{ percentageDone }} %</span> <span
+                                    class="text-muted small pt-2 ps-1">Progress</span>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card info-card sales-card">
+
+                <div class="card-body">
+                    <h5 class="card-title">Description</h5>
+
+                    <div class="d-flex align-items-center">
+                        <div class="ps-3">
+                            <p>{{ project.description }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xxl-4 col-md-6">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Task in this project</h5>
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th scope="col">Name</th>
+                            <th scope="col">Responsible</th>
+                            <th scope="col">Status</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% set colorClasses = ['table-primary', 'table-secondary', 'table-success', 'table-danger', 'table-warning', 'table-info', 'table-light', 'table-dark'] %}
+                        {% set colorIndex = 0 %}
+                        {% for task in tasks %}
+                            <tr class="{{ colorClasses[colorIndex % colorClasses|length] }}">
+                                <th scope="row">{{ task.name }}</th>
+                                <td>{{ task.assignedUser.email }}</td>
+                                <td>{{ task.status ? 'Done' : 'Pending' }}</td>
+                            </tr>
+                            {% set colorIndex = colorIndex + 1 %}
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                    <!-- End Table Variants -->
+
+                </div>
+            </div>
+        </div>
+    </div>
+
 
     <a class="back_list" href="{{ path('app_project_index') }}">back to list</a>
 
-    <a class="back_list"  href="{{ path('app_project_edit', {'id': project.id}) }}">edit</a>
+    <a class="back_list" href="{{ path('app_project_edit', {'id': project.id}) }}">edit</a>
 
     {{ include('project/_delete_form.html.twig') }}
 {% endblock %}

@@ -51,10 +51,19 @@ class ProjectController extends AbstractController
     #[Route('/{id}', name: 'app_project_show', methods: ['GET'])]
     public function show(Project $project): Response
     {
+        $tasks=$project->getTasks();
+        $nbTasks=count($tasks);
         $creator=$project->getCreatedBy();
+        $doneTasks = $tasks->filter(function ($task) {
+            return $task->getStatus(); // Assuming getStatus() returns a boolean indicating task status
+        });
+        $percentageDone = ($nbTasks > 0) ? (($doneTasks->count() / $nbTasks) * 100) : 0;
         return $this->render('project/show.html.twig', [
             'project' => $project,
+            'tasks' => $tasks,
             'creator' => $creator,
+            'nbTasks' => $nbTasks,
+            'percentageDone' => $percentageDone,
         ]);
     }
 

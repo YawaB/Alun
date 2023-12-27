@@ -6,4 +6,22 @@
 
 {% block body %}
 
+    <div class="row">
+        {%for project in projects %}
+        <div class="col-lg-4">
+            <div class="card">
+                <div class="card-header">{{ project.name }}</div>
+
+                <div class="card-body">
+
+                    <p class="card-text">{{ project.description }}</p>
+                    <a href="{{ path('app_project_show', {'id': project.id}) }}" class="btn btn-primary">View</a>
+                </div>
+                <div class="card-footer">
+                    <p class="card-text">Chef de projet : {{ project.createdBy.name }} </p>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
 {% endblock %}

@@ -17,6 +17,9 @@ class Project
 
     #[ORM\Column(length: 255)]
     private ?string $name = null;
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $description = null;
+
 
     #[ORM\OneToMany(mappedBy: 'project', targetEntity: Task::class)]
     private Collection $tasks;
@@ -88,4 +91,14 @@ class Project
 
         return $this;
     }
+    public function getDescription(): ?string
+    {
+        return $this->description;
+    }
+
+    public function setDescription(?string $description): void
+    {
+        $this->description = $description;
+    }
+
 }
